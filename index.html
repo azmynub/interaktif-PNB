@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>NuMedia</title>
+	<link href="css/screen.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+</head>
+	<body>
+    <video id="webcam" autoplay width="640" height="480"></video>
+    <canvas id="canvas-source" width="640" height="480"></canvas>
+    <canvas id="canvas-blended" width="640" height="480" style="visibility:hidden"></canvas>
+
+	  <!-- TODO : Javascript code -->
+    <script src="js/le.min.js" type="text/javascript"></script>
+    <script>
+      LE.init({token: '1d99d2fb-a232-4fa0-ae58-37ac889b3902', catchall: true, ssl: false});
+    </script>
+    <script src="js/loggly.tracker-2.1.min.js" type="text/javascript"></script>
+    <script>
+        var _LTracker = _LTracker || [];
+        _LTracker.push({'logglyKey': '71fff0f8-23ce-4e1e-ad4c-baeae2983223',
+        'sendConsoleErrors' : false,
+        'tag' : 'lfd-client' });
+    </script>
+    <script src="js/adapter-latest.js"></script>
+		<script src="js/jquery-2.2.4.min.js" type="text/javascript" charset="utf-8"></script>
+    <script language="javascript" type="text/javascript" src="js/reconnecting-sse.min.js"></script>
+    <script language="javascript" type="text/javascript" src="js/service.js"></script>
+		<script src="js/box-slider-all.jquery.min.js"></script>
+    <script src="js/buffer-loader.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+      var last_position = -1;
+      var last_move_position = -1;
+    </script>
+    <script src="js/motion.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      var status = 0;
+	  var lewat = 0;
+      var vidPlay = 0;
+        var dataId = 0;
+		  $(function () {
+        
+        var init = function () {
+          // This function runs before the slide transition starts
+          var switchIndicator = function ($c, $n, currIndex, nextIndex) {
+            // kills the timeline by setting it's width to zero
+            $timeIndicator.stop().css('width', 0);
+            // Highlights the next slide pagination control
+            $indicators.removeClass('current').eq(nextIndex).addClass('current');
+          };
+
+          // This function runs after the slide transition finishes
+          var startTimeIndicator = function () {
+            // start the timeline animation
+            $timeIndicator.animate({width: '100%'}, slideInterval);
+          };
+
+          var $box = $('#box')
+            , $indicators = $('.goto-slide')
+            , $effects = $('.effect')
+            , $timeIndicator = $('#time-indicator')
+            , slideInterval = 5000;
+
+          // initialize the plugin with the desired settings
+          $box.boxSlider({
+                  speed: 1200
+                , effect: 'scrollHorz3d'
+                , autoScroll: false
+                , next: '#next'
+                , prev: '#prev'
+                , pause: '#pause'
+              });
+          
+        };
+        
+        $('#next').hover(function(){
+         // if(status == 0){
+		  //$(this).trigger('click');
+            
+         // }
+        });
+        $('#prev').hover(function(){
+         // if(status == 0){
+		 // $(this).trigger('click');
+           
+        //  }
+        });
+
+        $(document).on('customChangeEvent', function(e, opts) {
+			console.log(opts.key);
+          switch (opts.key) {
+            case 'left':
+			if(lewat==0){
+                $('#prev').trigger('click');
+				 status = 1;
+            dataId = parseInt($('#box').find('.jbs-current').attr('data-id'));
+            vidPlay = 0;
+            if(dataId==1){
+              vidPlay=6;
+            }else{
+              vidPlay = dataId-1; 
+            }
+            var video = document.getElementById('vid'+vidPlay);
+            video.addEventListener('ended',changeStatus,false);
+            video.play();
+			lewat = 1;
+			aktifasi();
+              //  console.log(video);
+			}
+              break;
+
+            case 'right':
+			if(lewat==0){
+              $('#next').trigger('click');
+			  status = 1;
+            dataId = parseInt($('#box').find('.jbs-current').attr('data-id'));
+            vidPlay = 0;
+            if(dataId==6){
+              vidPlay=1;
+            }else{
+              vidPlay = dataId+1; 
+            }
+            var video = document.getElementById('vid'+vidPlay);
+            video.addEventListener('ended',changeStatus,false);
+            video.play();
+			lewat = 1;
+			aktifasi();
+             // console.log(video);
+			  }
+              break;
+          }
+          
+        });
+
+        init();
+		  });
+      function changeStatus(){
+          status=0;
+          this.play();
+          //alert('selesai');
+        }
+		function aktifasi(){
+				setTimeout(function(){
+					lewat=0;
+				},1000);
+			}
+		</script>
+
+    <div id="page">
+		<img src="video/ghw.png" />
+      <section class="bks">
+        <div id="viewport">
+          <div id="box">
+            <figure data-id="1" class="slide jbs-current">
+              <video id="vid1" src="video/vid1.mp4" width="50%" height="50%"></video>
+            </figure>
+			     <figure data-id="2" class="slide">
+              <video id="vid2" src="video/vid2.mp4" width="640" height="480"></video>
+            </figure>
+            <figure data-id="3" class="slide">
+              <video id="vid3" src="video/vid1.mp4" width="640" height="480"></video>
+            </figure>
+			<figure data-id="4" class="slide">
+              <video id="vid4" src="video/vid1.mp4" width="640" height="480"></video>
+            </figure>
+            <figure data-id="5" class="slide">
+             <video id="vid5" src="video/vid1.mp4" width="640" height="480"></video>
+            </figure>
+			       <figure data-id="6" class="slide">
+             <video id="vid6" src="video/vid1.mp4" width="640" height="480"></video>
+            </figure>
+          </div>
+        </div>
+
+        <footer>
+          <nav class="slider-controls" style="display:none">
+            <a class="increment-control" href="#" id="prev" title="go to the next slide">&laquo; </a>
+            <a class="increment-control" href="#" id="next" title="go to the next slide"> &raquo;</a>
+          </nav>
+        </footer>
+      </section>
+    </div>
+	</body>
+
+</html>

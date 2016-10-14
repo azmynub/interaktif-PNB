@@ -1,0 +1,62 @@
+html,body{
+      overflow: hidden;
+	  background:#999;
+	  height:100%;
+	  position:relative;
+    }
+    #page{
+      height: 768;
+      width: 1024px;
+	  position:relative;
+    }
+    #next{
+      position: absolute;
+      z-index:999;
+      height: 100%;
+      width: 20%;
+      top:0;
+      right: 0;
+    }
+    #prev{
+      position: absolute;
+      z-index:999;
+      height: 100%;
+      width: 20%;
+      top:0;
+      left: 0;
+    }
+    #webcam {
+      display:none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1000;
+    }
+    #canvas-source {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 10px;
+      z-index: 1000;
+    }
+    #canvas-blended {
+      display: none;
+      position: absolute;
+      top: 180px;
+      left: 0px;
+      width: 224px;
+      height: 126px;
+      z-index: 1000;
+    }
+	#page img{
+		margin:0px auto;
+		position:absolute;
+		top:0;
+		left:10px;
+		/*z-index:1;*/
+	}
+	
+	.bks{
+		margin-top:172px;
+		/*z-index:0;*/
+	}
